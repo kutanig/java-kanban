@@ -7,19 +7,16 @@ public class Main {
         Task task2 = new Task("задача2","онисание2",Taskstatus.DONE);
         tm.add(task2);
 
-        Epik epik = new Epik("эпик первый","утро",Taskstatus.DONE);
-        tm.add(epik);
-        Subtask subtask1 = new Subtask("подзадача","умытся",Taskstatus.IN_PROGRESS);
-        subtask1.epikId = epik.getId();
+        Epiс epiс = new Epiс("эпик первый","утро",Taskstatus.DONE);
+        tm.add(epiс);
+        Subtask subtask1 = new Subtask("подзадача","умытся",Taskstatus.IN_PROGRESS, epiс.getId());
         tm.add(subtask1);
-        Subtask subtask2 = new Subtask("подзадача2","побрится",Taskstatus.NEW);
-        subtask2.epikId = epik.getId();
+        Subtask subtask2 = new Subtask("подзадача2","побрится",Taskstatus.NEW, epiс.getId());
         tm.add(subtask2);
 
-        Epik epik1 = new Epik("эпик второй","сходить в магазин",Taskstatus.NEW);
-        tm.add(epik1);
-        Subtask subtask = new Subtask("подзадача","встать с дивана",Taskstatus.DONE);
-        subtask.epikId = epik1.getId();
+        Epiс epiс1 = new Epiс("эпик второй","сходить в магазин",Taskstatus.NEW);
+        tm.add(epiс1);
+        Subtask subtask = new Subtask("подзадача","встать с дивана",Taskstatus.DONE, epiс1.getId());
         tm.add(subtask);
 
         System.out.println("Задачи:");
@@ -27,29 +24,29 @@ public class Main {
         System.out.println(task2);
         System.out.println();
         System.out.println("Эпики:");
-        System.out.println(epik);
-        System.out.println(epik1);
+        System.out.println(epiс);
+        System.out.println(epiс1);
         System.out.println();
         System.out.println("Подзадачи:");
         System.out.println();
         System.out.println(subtask1);
         System.out.println(subtask2);
         System.out.println(subtask);
-
+        tm.delSubtask(4);
         task1.setStatus(Taskstatus.IN_PROGRESS);
         tm.update(task1);
         task2.setStatus(Taskstatus.NEW);
         tm.update(task2);
 
-        epik.setStatus(Taskstatus.NEW);
-        tm.update(epik);
+        epiс.setStatus(Taskstatus.NEW);
+        tm.update(epiс);
         subtask1.setStatus(Taskstatus.DONE);
         tm.update(subtask1);
         subtask2.setStatus(Taskstatus.DONE);
         tm.update(subtask2);
 
-        epik1.setStatus(Taskstatus.DONE);
-        tm.update(epik1);
+        epiс1.setStatus(Taskstatus.DONE);
+        tm.update(epiс1);
         subtask.setStatus(Taskstatus.IN_PROGRESS);
         tm.update(subtask);
 
@@ -58,17 +55,17 @@ public class Main {
         System.out.println(task2);
         System.out.println();
         System.out.println("Эпики:");
-        System.out.println(epik);
-        System.out.println(epik1);
+        System.out.println(epiс);
+        System.out.println(epiс1);
         System.out.println();
         System.out.println("Подзадачи:");
         System.out.println();
         System.out.println(subtask1);
         System.out.println(subtask2);
         System.out.println(subtask);
+        System.out.println();
 
-        tm.delTasks(task1.getId());
-        tm.delEpiks(epik1.getId());
-
+        tm.delTask(task1.getId());
+        tm.delEpiс(epiс1.getId());
     }
 }
