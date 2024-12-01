@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
-class Epiс extends  Task{
+class Epic extends  Task {
     private final ArrayList<Integer> subIds = new ArrayList<>();
 
-    public Epiс(String name, String description, Taskstatus status) {
+    public Epic(String name, String description, Taskstatus status) {
         super(name, description, status);
     }
 
