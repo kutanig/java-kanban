@@ -32,7 +32,7 @@ public class Main {
         System.out.println(subtask1);
         System.out.println(subtask2);
         System.out.println(subtask);
-        tm.delSubtask(4);
+        tm.delSubtask(subtask1.getId());
         task1.setStatus(Taskstatus.IN_PROGRESS);
         tm.update(task1);
         task2.setStatus(Taskstatus.NEW);
