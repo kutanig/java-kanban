@@ -1,3 +1,5 @@
+package Tasc;
+
 import java.util.Objects;
 
 public class Task {
@@ -9,6 +11,13 @@ public class Task {
 
 
     public Task(String name, String description, Taskstatus status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+
+    public Task(Integer id, String name, String description, Taskstatus status) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
@@ -52,6 +61,7 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
+        if (id == task.id) return true;
         return Objects.equals(id, task.id) && Objects.equals(name, task.name) && Objects.equals(description, task.description) && status == task.status;
     }
 
@@ -69,5 +79,4 @@ public class Task {
                 ", status=" + status +
                 '}';
     }
-
 }

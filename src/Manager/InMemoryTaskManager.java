@@ -1,3 +1,10 @@
+package Manager;
+
+import Tasc.Epic;
+import Tasc.Subtask;
+import Tasc.Task;
+import Tasc.Taskstatus;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,12 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private int nextId = 1;
-    private final HistoryManager historyManager;
-
-
-    public InMemoryTaskManager(HistoryManager historyManager) {
-        this.historyManager = historyManager;
-    }
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public void add(Task task) {
@@ -80,7 +82,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTasK(int id) {
+    public Task getTask(int id) {
         historyManager.add(tasks.get(id));
         return tasks.get(id);
     }

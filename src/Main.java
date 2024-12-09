@@ -1,8 +1,16 @@
+import Manager.HistoryManager;
+import Manager.Managers;
+import Manager.TaskManager;
+import Tasc.Epic;
+import Tasc.Subtask;
+import Tasc.Task;
+import Tasc.Taskstatus;
+
 public class Main {
 
     public static void main(String[] args) {
         HistoryManager hM = Managers.getDefaultHistory();
-        TaskManager tM = Managers.getDefault(hM);
+        TaskManager tM = Managers.getDefault();
 
         Task task1 = new Task("задача1", "описание", Taskstatus.NEW);
         tM.add(task1);
@@ -36,9 +44,9 @@ public class Main {
         subtask.setStatus(Taskstatus.IN_PROGRESS);
         tM.update(subtask);
 
-        tM.getTasK(task1.getId());
-        tM.getTasK(task2.getId());
-        tM.getTasK(task1.getId());
+        tM.getTask(task1.getId());
+        tM.getTask(task2.getId());
+        tM.getTask(task1.getId());
         tM.getSubtask(subtask.getId());
         tM.getEpic(epic.getId());
         tM.getEpic(epic.getId());
@@ -46,7 +54,7 @@ public class Main {
         tM.getEpic(epic1.getId());
         tM.getSubtask(subtask2.getId());
         tM.getSubtask(subtask1.getId());
-        tM.getTasK(task1.getId());
+        tM.getTask(task1.getId());
 
         printAllTasks(tM, hM);
 

@@ -1,7 +1,11 @@
+package Manager;
+
+import Tasc.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryHistoryManager implements HistoryManager{
+public class InMemoryHistoryManager implements HistoryManager {
 
     private final ArrayList<Task> tasksHistory = new ArrayList<>();
 

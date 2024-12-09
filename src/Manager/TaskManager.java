@@ -1,3 +1,9 @@
+package Manager;
+
+import Tasc.Epic;
+import Tasc.Subtask;
+import Tasc.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +26,7 @@ public interface TaskManager {
 
     void clearSubtasks();
 
-    Task getTasK(int id);
+    Task getTask(int id);
 
     Epic getEpic(int id);
 
@@ -44,3 +50,4 @@ public interface TaskManager {
 
     HistoryManager getHistoryManager();
 }
+
