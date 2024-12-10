@@ -133,8 +133,7 @@ public class InMemoryTaskManager implements TaskManager {
         return epicSub;
     }
 
-    @Override
-    public void epicStatusUpdate(Epic epic) {
+    private void epicStatusUpdate(Epic epic) {
         if (epic.getSubIds().isEmpty()) {
             epic.setStatus(Taskstatus.NEW);
         } else {
@@ -189,7 +188,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public HistoryManager getHistoryManager() {
-        return historyManager;
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 }

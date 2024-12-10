@@ -18,6 +18,7 @@ class InMemoryTaskManagerTest {
     Task task2;
     Epic epic1;
     Epic epic2;
+    Epic epic3;
 
     @BeforeEach
     void setUp() {
@@ -25,7 +26,8 @@ class InMemoryTaskManagerTest {
         task1 = new Task("test task1","description task1",Taskstatus.NEW);
         task2 = new Task("test task1","description task2",Taskstatus.NEW);
         epic1 = new Epic("Test epic1","description epic1", Taskstatus.NEW);
-        epic2 = new Epic("Test epic2","description epic2", Taskstatus.NEW);
+        epic2 = new Epic("Test epic2","description epic2", Taskstatus.DONE);
+        epic3 = new Epic("Test epic3","description epic3", Taskstatus.IN_PROGRESS);
     }
 
     @Test
@@ -101,14 +103,75 @@ class InMemoryTaskManagerTest {
     @Test
     void updatingTheSubtaskShouldChangeTheStatusOfEpic() {
         taskManager.add(epic1);
+        taskManager.add(epic2);
         Subtask subtask1 = new Subtask("test sub1","description1",Taskstatus.NEW, epic1.getId());
         Subtask subtask2 = new Subtask("test sub2", "description2", Taskstatus.NEW, epic1.getId());
+        Subtask subtask3 = new Subtask("test sub3", "description3", Taskstatus.DONE, epic2.getId());
+        Subtask subtask4 = new Subtask("test sub4", "description4", Taskstatus.DONE, epic2.getId());
         taskManager.add(subtask1);
         taskManager.add(subtask2);
+        taskManager.add(subtask3);
+        taskManager.add(subtask4);
         subtask1.setStatus(Taskstatus.DONE);
+        subtask4.setStatus(Taskstatus.NEW);
         taskManager.update(subtask1);
+        taskManager.update(subtask4);
         assertEquals(Taskstatus.IN_PROGRESS, epic1.getStatus());
+        assertEquals(Taskstatus.IN_PROGRESS, epic2.getStatus());
     }
 
+    @Test
+    void AddTheSubtaskShouldChangeTheStatusOfEpic() {
+        taskManager.add(epic2);
+        Subtask subtask1 = new Subtask("test sub1", "description1", Taskstatus.DONE, epic2.getId());
+        Subtask subtask2 = new Subtask("test sub2", "description2", Taskstatus.DONE, epic2.getId());
+        Subtask subtask3 = new Subtask("test sub3", "description3", Taskstatus.NEW, epic2.getId());
+        taskManager.add(subtask1);
+        taskManager.add(subtask2);
+        taskManager.add(subtask3);
+        assertEquals(Taskstatus.IN_PROGRESS, epic2.getStatus());
+    }
 
+    @Test
+    void removeTheSubtaskShouldChangeTheStatusOfEpic() {
+        taskManager.add(epic3);
+        Subtask subtask1 = new Subtask("test sub1", "description1", Taskstatus.DONE, epic3.getId());
+        Subtask subtask2 = new Subtask("test sub2", "description2", Taskstatus.DONE, epic3.getId());
+        Subtask subtask3 = new Subtask("test sub3", "description3", Taskstatus.NEW, epic3.getId());
+        taskManager.add(subtask1);
+        taskManager.add(subtask2);
+        taskManager.add(subtask3);
+        taskManager.delSubtask(subtask3.getId());
+        assertEquals(Taskstatus.DONE, epic3.getStatus());
+    }
+
+    @Test
+    void removeTurnTheSubtaskShouldChangeTheStatusOfEpic() {
+        taskManager.add(epic2);
+        Subtask subtask1 = new Subtask("test sub1", "description1", Taskstatus.DONE, epic2.getId());
+        Subtask subtask2 = new Subtask("test sub2", "description2", Taskstatus.IN_PROGRESS, epic2.getId());
+        Subtask subtask3 = new Subtask("test sub3", "description3", Taskstatus.NEW, epic2.getId());
+        taskManager.add(subtask1);
+        taskManager.add(subtask2);
+        taskManager.add(subtask3);
+        taskManager.delSubtask(subtask1.getId());
+        taskManager.delSubtask(subtask2.getId());
+        taskManager.delSubtask(subtask3.getId());
+        assertEquals(Taskstatus.NEW, epic2.getStatus());
+    }
+
+    @Test
+    void removeAllTheSubtaskShouldChangeTheStatusOfEpic() {
+        taskManager.add(epic2);
+        taskManager.add(epic3);
+        Subtask subtask1 = new Subtask("test sub1", "description1", Taskstatus.DONE, epic2.getId());
+        Subtask subtask2 = new Subtask("test sub2", "description2", Taskstatus.IN_PROGRESS, epic2.getId());
+        Subtask subtask3 = new Subtask("test sub3", "description3", Taskstatus.IN_PROGRESS, epic3.getId());
+        taskManager.add(subtask1);
+        taskManager.add(subtask2);
+        taskManager.add(subtask3);
+        taskManager.clearSubtasks();
+        assertEquals(Taskstatus.NEW, epic2.getStatus());
+        assertEquals(Taskstatus.NEW, epic3.getStatus());
+    }
 }

@@ -40,14 +40,12 @@ public interface TaskManager {
 
     ArrayList<Subtask> getSubsOfEpic(int id);
 
-    void epicStatusUpdate(Epic epic);
-
     List<Task> getTasks();
 
     List<Subtask> getSubtasks();
 
     List<Epic> getEpics();
 
-    HistoryManager getHistoryManager();
+    List<Task> getHistory();
 }
 
