@@ -21,6 +21,8 @@ class EpicTest {
     void shouldTrueIfIdsAreEquals() {
         assertEquals(epic1, epic2);
     }
+
+
     @Test
     void epicCannotBeAddedToItselfAsASubtask () {
         int subtasksSize = epic1.getSubIds().size();

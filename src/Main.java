@@ -19,7 +19,7 @@ public class Main {
 
         Epic epic = new Epic("эпик первый", "утро", Taskstatus.DONE);
         tM.add(epic);
-        Subtask subtask1 = new Subtask("подзадача", "умытся", Taskstatus.IN_PROGRESS, epic.getId());
+        Subtask subtask1 = new Subtask("подзадача1", "умытся", Taskstatus.IN_PROGRESS, epic.getId());
         tM.add(subtask1);
         Subtask subtask2 = new Subtask("подзадача2", "побрится", Taskstatus.NEW, epic.getId());
         tM.add(subtask2);
