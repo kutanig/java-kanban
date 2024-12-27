@@ -32,11 +32,11 @@ public interface TaskManager {
 
     Subtask getSubtask(int id);
 
-    void delTask(int id);
+    void removeTask(int id);
 
-    void delEpic(int id);
+    void removeEpic(int id);
 
-    void delSubtask(int id);
+    void removeSubTask(int id);
 
     ArrayList<Subtask> getSubsOfEpic(int id);
 
@@ -47,5 +47,9 @@ public interface TaskManager {
     List<Epic> getEpics();
 
     List<Task> getHistory();
+
+    List<Object> phm1();
+
+    void remove(int id);
 }
 

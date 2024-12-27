@@ -54,7 +54,7 @@ class InMemoryTaskManagerTest {
     void removeTaskById() {
         taskManager.add(task1);
         taskManager.add(task2);
-        taskManager.delTask(task1.getId());
+        taskManager.removeTask(task1.getId());
         List<Task> tasks = taskManager.getTasks();
         assertFalse(tasks.contains(task1));
         assertTrue(tasks.contains(task2));
@@ -141,7 +141,7 @@ class InMemoryTaskManagerTest {
         taskManager.add(subtask1);
         taskManager.add(subtask2);
         taskManager.add(subtask3);
-        taskManager.delSubtask(subtask3.getId());
+        taskManager.removeSubTask(subtask3.getId());
         assertEquals(Taskstatus.DONE, epic3.getStatus());
     }
 
@@ -154,9 +154,9 @@ class InMemoryTaskManagerTest {
         taskManager.add(subtask1);
         taskManager.add(subtask2);
         taskManager.add(subtask3);
-        taskManager.delSubtask(subtask1.getId());
-        taskManager.delSubtask(subtask2.getId());
-        taskManager.delSubtask(subtask3.getId());
+        taskManager.removeSubTask(subtask1.getId());
+        taskManager.removeSubTask(subtask2.getId());
+        taskManager.removeSubTask(subtask3.getId());
         assertEquals(Taskstatus.NEW, epic2.getStatus());
     }
 
