@@ -4,6 +4,7 @@ import Manager.HistoryManager;
 import Manager.Managers;
 import Manager.TaskManager;
 import Tasc.Epic;
+import Tasc.Subtask;
 import Tasc.Task;
 import Tasc.Taskstatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,13 +34,69 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void removeFirstTaskWhenAddNewTaskAndListAreFull() {
+    void removeTaskInHistory() {
         for (int i = 0; i < 15; i++) {
-            historyManager.add(new Task("task " + i, "description", Taskstatus.NEW));
+            taskManager.add(new Task("task " + i, "description", Taskstatus.NEW));
+            taskManager.getTask(i + 1);
         }
-        Task testTask = new Task("test task1", "description1", Taskstatus.NEW);
-        historyManager.add(testTask);
-        assertEquals(10, historyManager.getHistory().size());
-        assertEquals(testTask, historyManager.getHistory().getLast());
+        for (int i = 0; i < 5; i++) {
+            taskManager.removeTask(i +1);
+        }
+        assertEquals (10, taskManager.getHistory().size());
+    }
+
+    @Test
+    void repeatsInHistory() {
+        for (int i = 0; i < 20; i++) {
+            taskManager.add(new Task("task " + i, "description", Taskstatus.NEW));
+            taskManager.getTask(i + 1);
+        }
+        taskManager.getTask(1);
+        taskManager.getTask(10);
+        taskManager.getTask(20);
+
+        int dublicate = 0;
+        for (int i = 0; i < taskManager.getHistory().size() - 1; i++) {
+            for (int j = i + 1; j < taskManager.getHistory().size(); j++) {
+                if (i == j + 1)
+                    dublicate++;
+            }
+        }
+        assertEquals(0, dublicate);
+        assertEquals(20, taskManager.getHistory().size());
+    }
+
+    @Test
+    void removeEpicWithSubtasks() {
+        Task task1 = new Task("test task1","description task1",Taskstatus.NEW);
+        Task task2 = new Task("test task1","description task2",Taskstatus.NEW);
+        taskManager.add(task1);
+        taskManager.add(task2);
+        Epic epic1 = new Epic("Test epic1","description epic1", Taskstatus.NEW);
+        Epic epic2 = new Epic("Test epic2","description epic2", Taskstatus.DONE);
+        taskManager.add(epic1);
+        taskManager.add(epic2);
+        Subtask subtask1 = new Subtask("test sub1","descroption1",Taskstatus.NEW,epic1.getId());
+        Subtask subtask2 = new Subtask("test sub2", "description2", Taskstatus.NEW, epic1.getId());
+        Subtask subtask3 = new Subtask("test sub3", "description3", Taskstatus.NEW, epic1.getId());
+        taskManager.add(subtask1);
+        taskManager.add(subtask2);
+        taskManager.add(subtask3);
+
+        taskManager.getTask(task1.getId());
+        taskManager.getTask(task2.getId());
+        taskManager.getEpic(epic1.getId());
+        taskManager.getEpic(epic2.getId());
+        taskManager.getSubsOfEpic(subtask1.getId());
+        taskManager.getSubsOfEpic(subtask2.getId());
+        taskManager.getSubsOfEpic(subtask3.getId());
+
+        taskManager.removeEpic(epic1.getId());
+
+        assertFalse(taskManager.getHistory().contains(epic1));
+        assertFalse(taskManager.getHistory().contains(subtask1));
+        assertFalse(taskManager.getHistory().contains(subtask2));
+        assertFalse(taskManager.getHistory().contains(subtask3));
+        assertEquals(3, taskManager.getHistory().size());
     }
 }
