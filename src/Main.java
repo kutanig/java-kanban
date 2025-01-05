@@ -1,4 +1,3 @@
-import Manager.HistoryManager;
 import Manager.Managers;
 import Manager.TaskManager;
 import Task.Epic;
@@ -10,7 +9,6 @@ public class Main {
 
     public static void main(String[] args) {
         TaskManager taskManager = Managers.getDefault();
-        HistoryManager historyManager = Managers.getDefaultHistory();
 
         Task task1 = new Task("задача1", "описание", Taskstatus.NEW);
         taskManager.add(task1);
@@ -56,10 +54,10 @@ public class Main {
         taskManager.getSubtask(subtask1.getId());
         taskManager.getTask(task1.getId());
 
-        printAllTasks(taskManager, historyManager);
+        printAllTasks(taskManager);
 
     }
-    private static void printAllTasks(TaskManager manager, HistoryManager historyManager) {
+    private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getTasks()) {
             System.out.println(task);
@@ -81,8 +79,5 @@ public class Main {
         for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
-        /*for (Object id : manager.phm1()) {
-            System.out.println(id);
-        }*/
     }
 }

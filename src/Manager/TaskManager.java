@@ -47,9 +47,5 @@ public interface TaskManager {
     List<Epic> getEpics();
 
     List<Task> getHistory();
-
-    List<Object> phm1();
-
-    void remove(int id);
 }
 
