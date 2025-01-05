@@ -31,7 +31,8 @@ public class InMemoryHistoryManager implements HistoryManager {
             head = newNode;
         } else {
             oldTail.next = newNode;
-        } return newNode;
+        }
+        return newNode;
     }
 
     private void removeNode(int id) {
@@ -48,6 +49,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             }
         }
     }
+
     @Override
     public void add(Task task) {
         if (tasksHistory.containsKey(task.getId())) {
@@ -80,5 +82,4 @@ public class InMemoryHistoryManager implements HistoryManager {
     public ArrayList<Object> phm1() {
         return new ArrayList<>(tasksHistory.values());
     }
-
 }

@@ -23,11 +23,11 @@ class InMemoryTaskManagerTest {
     @BeforeEach
     void setUp() {
         taskManager = Managers.getDefault();
-        task1 = new Task("test task1","description task1",Taskstatus.NEW);
-        task2 = new Task("test task1","description task2",Taskstatus.NEW);
-        epic1 = new Epic("Test epic1","description epic1", Taskstatus.NEW);
-        epic2 = new Epic("Test epic2","description epic2", Taskstatus.DONE);
-        epic3 = new Epic("Test epic3","description epic3", Taskstatus.IN_PROGRESS);
+        task1 = new Task("test task1", "description task1", Taskstatus.NEW);
+        task2 = new Task("test task1", "description task2", Taskstatus.NEW);
+        epic1 = new Epic("Test epic1", "description epic1", Taskstatus.NEW);
+        epic2 = new Epic("Test epic2", "description epic2", Taskstatus.DONE);
+        epic3 = new Epic("Test epic3", "description epic3", Taskstatus.IN_PROGRESS);
     }
 
     @Test
@@ -75,7 +75,7 @@ class InMemoryTaskManagerTest {
     void removeAllEpicsAndRemoveAllSubtasks() {
         taskManager.add(epic1);
         taskManager.add(epic2);
-        Subtask subtask1 = new Subtask("test sub1","description1",Taskstatus.NEW, epic1.getId());
+        Subtask subtask1 = new Subtask("test sub1", "description1", Taskstatus.NEW, epic1.getId());
         Subtask subtask2 = new Subtask("test sub2", "description2", Taskstatus.NEW, epic1.getId());
         taskManager.add(subtask1);
         taskManager.add(subtask2);
@@ -89,7 +89,7 @@ class InMemoryTaskManagerTest {
     @Test
     void getAllSubtasks() {
         taskManager.add(epic1);
-        Subtask subtask1 = new Subtask("test sub1","description1",Taskstatus.NEW, epic1.getId());
+        Subtask subtask1 = new Subtask("test sub1", "description1", Taskstatus.NEW, epic1.getId());
         Subtask subtask2 = new Subtask("test sub2", "description2", Taskstatus.NEW, epic1.getId());
         taskManager.add(subtask1);
         taskManager.add(subtask2);
@@ -104,7 +104,7 @@ class InMemoryTaskManagerTest {
     void updatingTheSubtaskShouldChangeTheStatusOfEpic() {
         taskManager.add(epic1);
         taskManager.add(epic2);
-        Subtask subtask1 = new Subtask("test sub1","description1",Taskstatus.NEW, epic1.getId());
+        Subtask subtask1 = new Subtask("test sub1", "description1", Taskstatus.NEW, epic1.getId());
         Subtask subtask2 = new Subtask("test sub2", "description2", Taskstatus.NEW, epic1.getId());
         Subtask subtask3 = new Subtask("test sub3", "description3", Taskstatus.DONE, epic2.getId());
         Subtask subtask4 = new Subtask("test sub4", "description4", Taskstatus.DONE, epic2.getId());
