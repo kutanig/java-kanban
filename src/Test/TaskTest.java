@@ -1,7 +1,7 @@
 package Test;
 
-import Task.Task;
-import Task.Taskstatus;
+import task.Task;
+import task.Taskstatus;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,9 +1,9 @@
 package Manager;
 
-import Task.Epic;
-import Task.Subtask;
-import Task.Task;
-import Task.Taskstatus;
+import task.Epic;
+import task.Subtask;
+import task.Task;
+import task.Taskstatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -194,15 +194,5 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
-    }
-
-    @Override
-    public List<Object> phm1() {
-        return historyManager.phm1();
-    }
-
-    @Override
-    public void remove(int id) {
-        historyManager.remove(id);
     }
 }

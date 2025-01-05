@@ -1,7 +1,7 @@
 package Test;
 
-import Task.Epic;
-import Task.Taskstatus;
+import task.Epic;
+import task.Taskstatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
