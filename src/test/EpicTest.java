@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 import task.Epic;
 import task.Taskstatus;

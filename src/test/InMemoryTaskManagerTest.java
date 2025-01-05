@@ -1,6 +1,6 @@
-package Test;
+package test;
 
-import Manager.*;
+import manager.*;
 import task.Epic;
 import task.Subtask;
 import task.Task;
