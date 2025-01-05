@@ -121,7 +121,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void AddTheSubtaskShouldChangeTheStatusOfEpic() {
+    void addTheSubtaskShouldChangeTheStatusOfEpic() {
         taskManager.add(epic2);
         Subtask subtask1 = new Subtask("test sub1", "description1", Taskstatus.DONE, epic2.getId());
         Subtask subtask2 = new Subtask("test sub2", "description2", Taskstatus.DONE, epic2.getId());
