@@ -36,7 +36,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private void removeNode(int id) {
-        if (tasksHistory.get(id) != null) {
+        if (tasksHistory.containsKey(id)) {
             if (tasksHistory.get(id) == head) {
                 head = head.next;
                 head.prev = null;
@@ -47,6 +47,7 @@ public class InMemoryHistoryManager implements HistoryManager {
                 tasksHistory.get(id).prev.next = tasksHistory.get(id).next;
                 tasksHistory.get(id).next.prev = tasksHistory.get(id).prev;
             }
+            tasksHistory.remove(id);
         }
     }
 
@@ -54,17 +55,15 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
         if (tasksHistory.containsKey(task.getId())) {
             remove(task.getId());
-            tasksHistory.put(task.getId(), linkLast(task));
-        } else {
-            tasksHistory.put(task.getId(), linkLast(task));
         }
+        tasksHistory.put(task.getId(), linkLast(task));
     }
 
     @Override
     public List<Task> getHistory() {
         List<Task> list = new ArrayList<>();
         Node node = head;
-        for (int i = 0; i < tasksHistory.size(); i++) {
+        while (node != null) {
             list.add(node.task);
             node = node.next;
         }
@@ -75,11 +74,5 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void remove(int id) {
         removeNode(id);
         tasksHistory.remove(id);
-
-    }
-
-    @Override
-    public ArrayList<Object> phm1() {
-        return new ArrayList<>(tasksHistory.values());
     }
 }
