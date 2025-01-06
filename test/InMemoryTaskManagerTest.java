@@ -1,5 +1,3 @@
-package test;
-
 import manager.*;
 import task.Epic;
 import task.Subtask;

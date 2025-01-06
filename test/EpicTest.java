@@ -1,5 +1,3 @@
-package test;
-
 import task.Epic;
 import task.Taskstatus;
 import org.junit.jupiter.api.BeforeEach;
