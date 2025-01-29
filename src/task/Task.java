@@ -4,10 +4,11 @@ import java.util.Objects;
 
 public class Task {
 
-    private Integer id = 1;
-    private String name;
-    private String description;
-    private Taskstatus status;
+    protected Integer id = 1;
+    protected String name;
+    protected String description;
+    protected Taskstatus status;
+    protected TypesOfTasks type = TypesOfTasks.TASK;
 
 
     public Task(String name, String description, Taskstatus status) {
@@ -22,6 +23,7 @@ public class Task {
         this.description = description;
         this.status = status;
     }
+
 
     public Integer getId() {
         return id;
@@ -55,6 +57,17 @@ public class Task {
         this.status = status;
     }
 
+    public TypesOfTasks getType() {
+        return type;
+    }
+
+    public void setType(TypesOfTasks type) {
+        this.type = type;
+    }
+
+    public static Task fromString(String[] value) {
+        return new Task(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]));
+    }
 
     @Override
     public boolean equals(Object o) {
