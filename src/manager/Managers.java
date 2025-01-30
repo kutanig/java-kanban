@@ -1,5 +1,7 @@
 package manager;
 
+import java.io.File;
+
 public class Managers {
 
     public static TaskManager getDefault() {
@@ -11,6 +13,6 @@ public class Managers {
     }
 
     public static FileBackedTaskManager getBackedTMDefault() {
-        return new FileBackedTaskManager();
+        return new FileBackedTaskManager(new File("src/savedTM.txt"));
     }
 }

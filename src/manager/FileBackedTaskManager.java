@@ -7,29 +7,33 @@ import task.*;
 import java.io.*;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private final File savedFile = new File("src/savedTM.txt");
+    private final File savedFile;
+
+    public FileBackedTaskManager(File savedFile) {
+        this.savedFile = savedFile;
+    }
 
     public void save() throws ManagerSaveException {
         try (Writer writer = new FileWriter(savedFile)) {
             for (Task task : super.getTasks()) {
-                writer.write(toString(task) + "\n");
+                writer.write(convertToString(task) + "\n");
             }
             for (Epic epic : super.getEpics()) {
-                writer.write(toString(epic) + "\n");
+                writer.write(convertToString(epic) + "\n");
             }
             for (Subtask subtask : super.getSubtasks()) {
-                writer.write(toString(subtask) + "\n");
+                writer.write(convertToString(subtask) + "\n");
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Error");
+            throw new ManagerSaveException("Saving error: " + e.getMessage());
         }
     }
 
-    private String toString(Task task) {
+    private String convertToString(Task task) {
         return String.format("%s,%s,%s,%s,%s", task.getId(), task.getType(), task.getName(), task.getStatus(), task.getDescription());
     }
 
-    private String toString(Subtask subtask) {
+    private String convertToString(Subtask subtask) {
         return String.format("%s,%s,%s,%s,%s,%s", subtask.getId(), subtask.getType(), subtask.getName(), subtask.getStatus(), subtask.getDescription(), subtask.getEpicId());
     }
 
