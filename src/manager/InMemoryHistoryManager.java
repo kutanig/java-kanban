@@ -37,7 +37,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private void removeNode(int id) {
         if (tasksHistory.containsKey(id)) {
-            if (tasksHistory.get(id) == head) {
+            if (tasksHistory.get(id) == head && tasksHistory.get(id) == tail) {
+                head = null;
+                tail = null;
+            } else if (tasksHistory.get(id) == head) {
                 head = head.next;
                 head.prev = null;
             } else if (tasksHistory.get(id) == tail) {
