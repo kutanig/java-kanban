@@ -68,11 +68,12 @@ public class InMemoryTaskManager implements TaskManager {
             if (task.getId() == 1) {
                 task.setId(nextId++);
                 tasks.put(task.getId(), task);
-                sortedTasks.add(task);
             } else {
                 tasks.put(task.getId(), task);
-                sortedTasks.add(task);
                 nextId = task.getId() + 1;
+            }
+            if (task.getStartTime() != null && task.getDuration() != null) {
+                sortedTasks.add(task);
             }
         }
     }
@@ -96,19 +97,23 @@ public class InMemoryTaskManager implements TaskManager {
             if (subtask.getId() == 1) {
                 subtask.setId(nextId++);
                 subtasks.put(subtask.getId(), subtask);
-                sortedTasks.add(subtask);
                 Epic epic = epics.get(subtask.getEpicId());
                 epic.getSubIds().add(subtask.getId());
                 epicStatusUpdate(epic);
-                epicTimeCalculate(epic);
+                if (subtask.getStartTime() != null && subtask.getDuration() != null) {
+                    sortedTasks.add(subtask);
+                    epicTimeCalculate(epic);
+                }
             } else {
                 subtasks.put(subtask.getId(), subtask);
-                sortedTasks.add(subtask);
                 Epic epic = epics.get(subtask.getEpicId());
                 epic.getSubIds().add(subtask.getId());
                 epicStatusUpdate(epic);
-                epicTimeCalculate(epic);
                 nextId = subtask.getId() + 1;
+                if (subtask.getStartTime() != null && subtask.getDuration() != null) {
+                    sortedTasks.add(subtask);
+                    epicTimeCalculate(epic);
+                }
             }
         }
     }
@@ -121,8 +126,10 @@ public class InMemoryTaskManager implements TaskManager {
                 System.out.println(task.getName() + " update error: overlaps in time with another task.");
                 sortedTasks.add(tasks.get(task.getId()));
             } else {
-                sortedTasks.add(task);
                 tasks.put(task.getId(), task);
+            }
+            if (task.getStartTime() != null && task.getDuration() != null) {
+                sortedTasks.add(task);
             }
         }
     }
@@ -142,11 +149,13 @@ public class InMemoryTaskManager implements TaskManager {
                 System.out.println(subtask.getName() + " update error: overlaps in time with another task.");
                 sortedTasks.add(tasks.get(subtask.getId()));
             } else {
-                sortedTasks.add(subtask);
                 subtasks.put(subtask.getId(), subtask);
                 Epic epic = epics.get(subtask.getEpicId());
                 epicStatusUpdate(epic);
-                epicTimeCalculate(epic);
+                if (subtask.getStartTime() != null && subtask.getDuration() != null) {
+                    sortedTasks.add(subtask);
+                    epicTimeCalculate(epic);
+                }
             }
         }
     }
@@ -215,9 +224,11 @@ public class InMemoryTaskManager implements TaskManager {
         epic.getSubIds().remove((Integer) id);
         sortedTasks.remove(subtasks.get(id));
         historyManager.remove(id);
+        if (subtasks.get(id).getDuration() != null) {
+            epicTimeCalculate(epic);
+        }
         subtasks.remove(id);
         epicStatusUpdate(epic);
-        epicTimeCalculate(epic);
     }
 
     @Override

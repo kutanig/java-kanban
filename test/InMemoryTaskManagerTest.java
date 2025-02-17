@@ -10,13 +10,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryTaskManagerTest {
+ class InMemoryTaskManagerTest {
     TaskManager taskManager;
     Task task1;
     Task task2;
     Epic epic1;
     Epic epic2;
     Epic epic3;
+
 
     @BeforeEach
     void setUp() {
