@@ -6,6 +6,8 @@ import task.Taskstatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -172,5 +174,25 @@ import static org.junit.jupiter.api.Assertions.*;
         taskManager.clearSubtasks();
         assertEquals(Taskstatus.NEW, epic2.getStatus());
         assertEquals(Taskstatus.NEW, epic3.getStatus());
+    }
+
+    @Test
+    void taskIntersections() {
+        Task t1 = new Task("t1","description1",Taskstatus.NEW,LocalDateTime.of(2025,2,2,1,1),Duration.ofDays(1));
+        taskManager.add(t1);
+        Task t2 = new Task("task2","description2",Taskstatus.NEW,LocalDateTime.of(2025,2,1,1,2),Duration.ofDays(1));
+        taskManager.add(t2);
+        Task t3 = new Task("task3","description3",Taskstatus.NEW,LocalDateTime.of(2025,2,3,1,1),Duration.ofDays(1));
+        taskManager.add(t3);
+        Task t4 = new Task("task4","description4",Taskstatus.NEW,LocalDateTime.of(2025,1,1,1,1),Duration.ofDays(25));
+        taskManager.add(t4);
+        Task t5 = new Task("task5","description5",Taskstatus.NEW,LocalDateTime.of(2025,2,2,2,2),Duration.ofDays(1));
+        taskManager.add(t5);
+        Task t6 = new Task("task6","description6",Taskstatus.NEW,LocalDateTime.of(2025,2,2,2,2),Duration.ofMinutes(1));
+        taskManager.add(t6);
+        assertEquals(3, taskManager.getPrioritizedTasks().size());
+        assertTrue(taskManager.getPrioritizedTasks().contains(t1));
+        assertTrue(taskManager.getPrioritizedTasks().contains(t3));
+        assertTrue(taskManager.getPrioritizedTasks().contains(t4));
     }
 }
