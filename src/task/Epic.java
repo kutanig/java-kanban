@@ -13,7 +13,7 @@ public class Epic extends Task {
         super(name, description, status);
     }
 
-    public Epic(Integer id, String name, String description, Taskstatus status, LocalDateTime startTime, Duration duration , LocalDateTime endTime) {
+    public Epic(Integer id, String name, String description, Taskstatus status, LocalDateTime startTime, Duration duration, LocalDateTime endTime) {
         super(id, name, description, status, startTime, duration);
         this.epicEndTime = endTime;
     }
@@ -35,6 +35,7 @@ public class Epic extends Task {
             subIds.add(subtaskId);
         }
     }
+
     public LocalDateTime getEpicEndTime() {
         return epicEndTime;
     }
@@ -43,7 +44,7 @@ public class Epic extends Task {
         if (value[5].equals("null") && value[6].equals("null") && value[7].equals("null")) {
             return new Epic(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]));
         } else if (value[5].equals("null") && value[7].equals("null")) {
-            return new Epic(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]),Duration.parse(value[6]));
+            return new Epic(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]), Duration.parse(value[6]));
         }
         return new Epic(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]), LocalDateTime.parse(value[5]), Duration.parse(value[6]), LocalDateTime.parse(value[7]));
     }
