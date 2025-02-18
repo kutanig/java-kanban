@@ -1,8 +1,8 @@
-package Manager;
+package manager;
 
-import Tasc.Epic;
-import Tasc.Subtask;
-import Tasc.Task;
+import task.Epic;
+import task.Subtask;
+import task.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +32,11 @@ public interface TaskManager {
 
     Subtask getSubtask(int id);
 
-    void delTask(int id);
+    void removeTask(int id);
 
-    void delEpic(int id);
+    void removeEpic(int id);
 
-    void delSubtask(int id);
+    void removeSubtask(int id);
 
     ArrayList<Subtask> getSubsOfEpic(int id);
 
