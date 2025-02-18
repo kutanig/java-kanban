@@ -1,60 +1,66 @@
-import manager.Managers;
+import manager.FileBackedTaskManager;
 import manager.TaskManager;
 import task.Epic;
 import task.Subtask;
 import task.Task;
 import task.Taskstatus;
+import java.io.File;
 
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = Managers.getDefault();
+        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(new File("src/savedTM.txt"));
+        System.out.printf("%-25s", "");
+        System.out.println("***Загружено***");
+        printAllTasks(fileBackedTaskManager);
 
         Task task1 = new Task("задача1", "описание", Taskstatus.NEW);
-        taskManager.add(task1);
-        Task task2 = new Task("задача2", "онисание2", Taskstatus.DONE);
-        taskManager.add(task2);
+        fileBackedTaskManager.add(task1);
+        Task task2 = new Task("задача2", "описание2", Taskstatus.DONE);
+        fileBackedTaskManager.add(task2);
 
         Epic epic = new Epic("эпик первый", "утро", Taskstatus.DONE);
-        taskManager.add(epic);
-        Subtask subtask1 = new Subtask("подзадача1", "умытся", Taskstatus.IN_PROGRESS, epic.getId());
-        taskManager.add(subtask1);
-        Subtask subtask2 = new Subtask("подзадача2", "побрится", Taskstatus.NEW, epic.getId());
-        taskManager.add(subtask2);
+        fileBackedTaskManager.add(epic);
+        Subtask subtask1 = new Subtask("подзадача1", "умыться", Taskstatus.IN_PROGRESS, epic.getId());
+        fileBackedTaskManager.add(subtask1);
+        Subtask subtask2 = new Subtask("подзадача2", "побриться", Taskstatus.NEW, epic.getId());
+        fileBackedTaskManager.add(subtask2);
 
-        Epic epic1 = new Epic("эпик второй", "сходить в магазин", Taskstatus.NEW);
-        taskManager.add(epic1);
+        Epic epic1 = new Epic("эпик второй", "работа", Taskstatus.NEW);
+        fileBackedTaskManager.add(epic1);
         Subtask subtask = new Subtask("подзадача", "встать с дивана", Taskstatus.DONE, epic1.getId());
-        taskManager.add(subtask);
+        fileBackedTaskManager.add(subtask);
 
         task1.setStatus(Taskstatus.IN_PROGRESS);
-        taskManager.update(task1);
+        fileBackedTaskManager.update(task1);
         task2.setStatus(Taskstatus.NEW);
-        taskManager.update(task2);
+        fileBackedTaskManager.update(task2);
         epic.setStatus(Taskstatus.NEW);
-        taskManager.update(epic);
+        fileBackedTaskManager.update(epic);
         subtask1.setStatus(Taskstatus.DONE);
-        taskManager.update(subtask1);
+        fileBackedTaskManager.update(subtask1);
         subtask2.setStatus(Taskstatus.DONE);
-        taskManager.update(subtask2);
+        fileBackedTaskManager.update(subtask2);
         epic1.setStatus(Taskstatus.DONE);
-        taskManager.update(epic1);
+        fileBackedTaskManager.update(epic1);
         subtask.setStatus(Taskstatus.IN_PROGRESS);
-        taskManager.update(subtask);
+        fileBackedTaskManager.update(subtask);
 
-        taskManager.getTask(task1.getId());
-        taskManager.getTask(task2.getId());
-        taskManager.getTask(task1.getId());
-        taskManager.getSubtask(subtask.getId());
-        taskManager.getEpic(epic.getId());
-        taskManager.getEpic(epic.getId());
-        taskManager.getSubtask(subtask.getId());
-        taskManager.getEpic(epic1.getId());
-        taskManager.getSubtask(subtask2.getId());
-        taskManager.getSubtask(subtask1.getId());
-        taskManager.getTask(task1.getId());
+        fileBackedTaskManager.getTask(task1.getId());
+        fileBackedTaskManager.getTask(task2.getId());
+        fileBackedTaskManager.getTask(task1.getId());
+        fileBackedTaskManager.getSubtask(subtask.getId());
+        fileBackedTaskManager.getEpic(epic.getId());
+        fileBackedTaskManager.getEpic(epic.getId());
+        fileBackedTaskManager.getSubtask(subtask.getId());
+        fileBackedTaskManager.getEpic(epic1.getId());
+        fileBackedTaskManager.getSubtask(subtask2.getId());
+        fileBackedTaskManager.getSubtask(subtask1.getId());
+        fileBackedTaskManager.getTask(task1.getId());
 
-        printAllTasks(taskManager);
+        System.out.printf("%-25s", "");
+        System.out.println("***Добавлено***");
+        printAllTasks(fileBackedTaskManager);
 
     }
 

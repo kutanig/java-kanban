@@ -1,9 +1,6 @@
 package manager;
 
-import task.Epic;
-import task.Subtask;
-import task.Task;
-import task.Taskstatus;
+import task.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,23 +15,41 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void add(Task task) {
-        task.setId(nextId++);
-        tasks.put(task.getId(), task);
+        if (task.getId() == 1) {
+            task.setId(nextId++);
+            tasks.put(task.getId(), task);
+        } else {
+            tasks.put(task.getId(), task);
+            nextId = task.getId() + 1;
+        }
     }
 
     @Override
     public void add(Epic epic) {
-        epic.setId(nextId++);
-        epics.put(epic.getId(), epic);
+        if (epic.getId() == 1) {
+            epic.setId(nextId++);
+            epics.put(epic.getId(), epic);
+        } else {
+            epics.put(epic.getId(), epic);
+            nextId = epic.getId() + 1;
+        }
     }
 
     @Override
     public void add(Subtask subtask) {
-        subtask.setId(nextId++);
-        subtasks.put(subtask.getId(), subtask);
-        Epic epic = epics.get(subtask.getEpicId());
-        epic.getSubIds().add(subtask.getId());
-        epicStatusUpdate(epic);
+        if (subtask.getId() == 1) {
+            subtask.setId(nextId++);
+            subtasks.put(subtask.getId(), subtask);
+            Epic epic = epics.get(subtask.getEpicId());
+            epic.getSubIds().add(subtask.getId());
+            epicStatusUpdate(epic);
+        } else {
+            subtasks.put(subtask.getId(), subtask);
+            Epic epic = epics.get(subtask.getEpicId());
+            epic.getSubIds().add(subtask.getId());
+            epicStatusUpdate(epic);
+            nextId = subtask.getId() + 1;
+        }
     }
 
     @Override
