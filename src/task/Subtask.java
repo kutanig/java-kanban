@@ -37,17 +37,6 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
-    public static Subtask fromString(String[] value) {
-        if (value[5].equals("null") && value[6].equals("null")) {
-            return new Subtask(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]), Integer.parseInt(value[7]));
-        } else if (value[5].equals("null")) {
-            return new Subtask(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]), Duration.parse(value[6]), Integer.parseInt(value[7]));
-        } else if (value[6].equals("null")) {
-            return new Subtask(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]), LocalDateTime.parse(value[5]), Integer.parseInt(value[7]));
-        }
-        return new Subtask(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]), LocalDateTime.parse(value[5]), Duration.parse(value[6]), Integer.parseInt(value[7]));
-    }
-
     public int getEpicId() {
         return epicId;
     }

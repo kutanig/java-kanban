@@ -48,13 +48,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 String[] taskData = reader.readLine().split(",");
                 switch (TypesOfTasks.valueOf(taskData[1])) {
                     case TASK:
-                        fileBackedTM.add(Task.fromString(taskData));
+                        fileBackedTM.add(TaskParser.fromStringTask(taskData));
                         break;
                     case EPIC:
-                        fileBackedTM.add(Epic.fromString(taskData));
+                        fileBackedTM.add(TaskParser.fromStringEpic(taskData));
                         break;
                     case SUBTASK:
-                        fileBackedTM.add(Subtask.fromString(taskData));
+                        fileBackedTM.add(TaskParser.fromStringSubtask(taskData));
                         break;
                 }
             }

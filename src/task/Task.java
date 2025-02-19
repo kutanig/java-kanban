@@ -120,17 +120,6 @@ public class Task {
         this.duration = duration;
     }
 
-    public static Task fromString(String[] value) {
-        if (value[5].equals("null") && value[6].equals("null")) {
-            return new Task(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]));
-        } else if (value[5].equals("null")) {
-            return new Task(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]), Duration.parse(value[6]));
-        } else if (value[6].equals("null")) {
-            return new Task(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]), LocalDateTime.parse(value[5]));
-        }
-        return new Task(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]), LocalDateTime.parse(value[5]), Duration.parse(value[6]));
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -190,9 +190,11 @@ import static org.junit.jupiter.api.Assertions.*;
         taskManager.add(t5);
         Task t6 = new Task("task6","description6",Taskstatus.NEW,LocalDateTime.of(2025,2,2,2,2),Duration.ofMinutes(1));
         taskManager.add(t6);
+        Task t7 = new Task("t7","description7",Taskstatus.NEW,LocalDateTime.of(2025,2,3,1,2),Duration.ofDays(1));
+        taskManager.add(t7);
         assertEquals(3, taskManager.getPrioritizedTasks().size());
         assertTrue(taskManager.getPrioritizedTasks().contains(t1));
-        assertTrue(taskManager.getPrioritizedTasks().contains(t3));
+        assertTrue(taskManager.getPrioritizedTasks().contains(t7));
         assertTrue(taskManager.getPrioritizedTasks().contains(t4));
     }
 }

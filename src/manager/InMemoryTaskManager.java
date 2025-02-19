@@ -57,7 +57,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean timeIntersection(Task task1, Task task2) {
-        return task1.getStartTime().isBefore(task2.getEndTime()) && task1.getEndTime().isAfter(task2.getStartTime());
+        return (task1.getStartTime().isBefore(task2.getEndTime()) && task1.getEndTime().isAfter(task2.getStartTime()))
+                || task1.getStartTime().isEqual(task2.getEndTime()) || task1.getEndTime().isEqual(task2.getStartTime());
     }
 
     @Override
@@ -193,6 +194,8 @@ public class InMemoryTaskManager implements TaskManager {
     public void clearEpics() {
         epics.keySet().forEach(historyManager::remove);
         epics.clear();
+        subtasks.keySet().forEach(historyManager::remove);
+        subtasks.values().forEach(sortedTasks::remove);
         subtasks.clear();
     }
 
