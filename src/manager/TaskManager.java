@@ -4,7 +4,6 @@ import task.Epic;
 import task.Subtask;
 import task.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
@@ -38,7 +37,7 @@ public interface TaskManager {
 
     void removeSubtask(int id);
 
-    ArrayList<Subtask> getSubsOfEpic(int id);
+    List<Subtask> getSubsOfEpic(int id);
 
     List<Task> getTasks();
 
@@ -47,5 +46,7 @@ public interface TaskManager {
     List<Epic> getEpics();
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 }
 
