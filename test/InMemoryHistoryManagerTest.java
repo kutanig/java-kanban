@@ -85,9 +85,9 @@ class InMemoryHistoryManagerTest {
         taskManager.getTask(task2.getId());
         taskManager.getEpic(epic1.getId());
         taskManager.getEpic(epic2.getId());
-        taskManager.getSubsOfEpic(subtask1.getId());
-        taskManager.getSubsOfEpic(subtask2.getId());
-        taskManager.getSubsOfEpic(subtask3.getId());
+        taskManager.getSubsOfEpic(epic1.getId());
+        taskManager.getSubsOfEpic(epic2.getId());
+
 
         taskManager.removeEpic(epic1.getId());
 

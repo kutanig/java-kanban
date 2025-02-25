@@ -1,13 +1,15 @@
 package task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 public class Subtask extends Task {
     protected TypesOfTasks type = TypesOfTasks.SUBTASK;
     private int epicId;
 
-    public Subtask(String name, String description, Taskstatus status, int epicId) {
-        super(name, description, status);
+    public Subtask(Integer id, String name, String description, Taskstatus status, LocalDateTime startTime, Duration duration, int epicId) {
+        super(id, name, description, status, startTime, duration);
         this.epicId = epicId;
-
     }
 
     public Subtask(Integer id, String name, String description, Taskstatus status, int epicId) {
@@ -15,8 +17,24 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
-    public static Subtask fromString(String[] value) {
-        return new Subtask(Integer.parseInt(value[0]), value[2], value[4], Taskstatus.valueOf(value[3]), Integer.parseInt(value[5]));
+    public Subtask(Integer id, String name, String description, Taskstatus status, Duration duration, int epicId) {
+        super(id, name, description, status, duration);
+        this.epicId = epicId;
+    }
+
+    public Subtask(Integer id, String name, String description, Taskstatus status, LocalDateTime startTime, int epicId) {
+        super(id, name, description, status, startTime);
+        this.epicId = epicId;
+    }
+
+    public Subtask(String name, String description, Taskstatus status, LocalDateTime startTime, Duration duration, int epicId) {
+        super(name, description, status, startTime, duration);
+        this.epicId = epicId;
+    }
+
+    public Subtask(String name, String description, Taskstatus status, int epicId) {
+        super(name, description, status);
+        this.epicId = epicId;
     }
 
     public int getEpicId() {
