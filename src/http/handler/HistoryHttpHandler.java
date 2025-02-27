@@ -5,7 +5,7 @@ import manager.TaskManager;
 
 import java.io.IOException;
 
-public class HistoryHttpHandler extends BaseHttpHandler{
+public class HistoryHttpHandler extends BaseHttpHandler {
     public HistoryHttpHandler(TaskManager taskManager) {
         super(taskManager);
     }
@@ -21,8 +21,8 @@ public class HistoryHttpHandler extends BaseHttpHandler{
         }
     }
 
-    private void getHistory (HttpExchange httpExchange) throws IOException {
+    private void getHistory(HttpExchange httpExchange) throws IOException {
         response = gson.toJson(taskManager.getHistory());
-        sendText(httpExchange,response,200);
+        sendText(httpExchange, response, 200);
     }
 }

@@ -72,12 +72,12 @@ public class HttpTaskManagerTasksTest {
 
     @Test
     public void testGetEpics() throws IOException, InterruptedException {
-        //Epic epic = new Epic("epic","asd",Taskstatus.NEW);
-        //manager.add(epic);
+        Epic epic = new Epic("epic", "asd", Taskstatus.NEW);
+        manager.add(epic);
         HttpClient client = HttpClient.newHttpClient();
         URI url = URI.create("http://localhost:8080/epics");
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
-        HttpResponse<String> response = client.send(request,HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200,response.statusCode());
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        Assertions.assertEquals(200, response.statusCode());
     }
 }
