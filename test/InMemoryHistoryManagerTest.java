@@ -88,7 +88,6 @@ class InMemoryHistoryManagerTest {
         taskManager.getSubsOfEpic(epic1.getId());
         taskManager.getSubsOfEpic(epic2.getId());
 
-
         taskManager.removeEpic(epic1.getId());
 
         assertFalse(taskManager.getHistory().contains(epic1));
