@@ -16,7 +16,7 @@ public class SubtaskHttpHandler extends BaseHttpHandler {
         super(taskManager);
     }
 
-    enum Endpoint {GET_SUBTASK, GET_SUBTASKS, POST_SUBTASK, DELETE_SUBTASK, UNKNOWN}
+    enum Endpoint { GET_SUBTASK, GET_SUBTASKS, POST_SUBTASK, DELETE_SUBTASK, UNKNOWN }
 
     private Endpoint getEndpoint(String requestPath, String requestMethod) {
         String[] pathParts = requestPath.split("/");

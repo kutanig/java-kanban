@@ -14,7 +14,7 @@ public class EpicHttpHandler extends BaseHttpHandler {
         super(taskManager);
     }
 
-    enum Endpoint {GET_EPIC, GET_EPICS, GET_EPIC_SUBTASKS, POST_EPIC, DELETE_EPIC, UNKNOWN}
+    enum Endpoint { GET_EPIC, GET_EPICS, GET_EPIC_SUBTASKS, POST_EPIC, DELETE_EPIC, UNKNOWN }
 
     private Endpoint getEndpoint(String requestPath, String requestMethod) {
         String[] pathParts = requestPath.split("/");
