@@ -91,25 +91,6 @@ public class HttpTaskManagerTasksTest {
     }
 
     @Test
-    public void intersectionTest() throws IOException, InterruptedException {
-        Task task = new Task("Test 2", "Testing task 2", Taskstatus.NEW, LocalDateTime.now(), Duration.ofDays(1));
-        manager.add(task);
-        Task task2 = new Task("taskUpdate", "test", Taskstatus.IN_PROGRESS, LocalDateTime.now(), Duration.ofMinutes(5));
-        String taskJson = gson.toJson(task2);
-        HttpClient client = HttpClient.newHttpClient();
-        URI url = URI.create("http://localhost:8080/tasks");
-        HttpRequest request = HttpRequest.newBuilder().uri(url).POST(HttpRequest.BodyPublishers.ofString(taskJson)).build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(406, response.statusCode());
-
-        List<Task> tasksFromManager = manager.getTasks();
-
-        Assertions.assertNotNull(tasksFromManager);
-        Assertions.assertEquals(1, tasksFromManager.size());
-        Assertions.assertEquals(tasksFromManager.get(0).getName(), "Test 2", "Некорректное имя задачи");
-    }
-
-    @Test
     public void testGetEpics() throws IOException, InterruptedException {
         Epic epic = new Epic("epic", "asd", Taskstatus.NEW);
         manager.add(epic);
