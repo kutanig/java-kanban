@@ -13,7 +13,7 @@ public class TaskHttpHandler extends BaseHttpHandler {
         super(taskManager);
     }
 
-    enum Endpoint { GET_EPIC, GET_TASKS, CREATE_TASK, UPDATE_TASK, DELETE_TASK, UNKNOWN }
+    enum Endpoint { GET_TASK, GET_TASKS, CREATE_TASK, UPDATE_TASK, DELETE_TASK, UNKNOWN }
 
     private Endpoint getEndpoint(String requestPath, String requestMethod) {
         String[] pathParts = requestPath.split("/");
@@ -27,7 +27,7 @@ public class TaskHttpHandler extends BaseHttpHandler {
         }
         if (pathParts.length == 3 && pathParts[1].equals("tasks")) {
             if (requestMethod.equals("GET")) {
-                return Endpoint.GET_EPIC;
+                return Endpoint.GET_TASK;
             }
             if (requestMethod.equals("DELETE")) {
                 return Endpoint.DELETE_TASK;
@@ -43,7 +43,7 @@ public class TaskHttpHandler extends BaseHttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         Endpoint endpoint = getEndpoint(httpExchange.getRequestURI().getPath(), httpExchange.getRequestMethod());
         switch (endpoint) {
-            case GET_EPIC -> getTask(httpExchange);
+            case GET_TASK -> getTask(httpExchange);
             case GET_TASKS -> getTasks(httpExchange);
             case CREATE_TASK -> createTask(httpExchange);
             case UPDATE_TASK -> updateTask(httpExchange);
