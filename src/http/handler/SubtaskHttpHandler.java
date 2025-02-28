@@ -1,8 +1,5 @@
 package http.handler;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import exceptions.TimeIntersectionException;
 import manager.TaskManager;
@@ -16,7 +13,7 @@ public class SubtaskHttpHandler extends BaseHttpHandler {
         super(taskManager);
     }
 
-    enum Endpoint { GET_SUBTASK, GET_SUBTASKS, POST_SUBTASK, DELETE_SUBTASK, UNKNOWN }
+    enum Endpoint { GET_SUBTASK, GET_SUBTASKS, CREATE_SUBTASK, UPDATE_SUBTASK, DELETE_SUBTASK, UNKNOWN }
 
     private Endpoint getEndpoint(String requestPath, String requestMethod) {
         String[] pathParts = requestPath.split("/");
@@ -25,7 +22,7 @@ public class SubtaskHttpHandler extends BaseHttpHandler {
                 return Endpoint.GET_SUBTASKS;
             }
             if (requestMethod.equals("POST")) {
-                return Endpoint.POST_SUBTASK;
+                return Endpoint.CREATE_SUBTASK;
             }
         }
         if (pathParts.length == 3 && pathParts[1].equals("subtasks")) {
@@ -34,6 +31,9 @@ public class SubtaskHttpHandler extends BaseHttpHandler {
             }
             if (requestMethod.equals("DELETE")) {
                 return Endpoint.DELETE_SUBTASK;
+            }
+            if (requestMethod.equals("POST")) {
+                return Endpoint.UPDATE_SUBTASK;
             }
         }
         return Endpoint.UNKNOWN;
@@ -45,7 +45,8 @@ public class SubtaskHttpHandler extends BaseHttpHandler {
         switch (endpoint) {
             case GET_SUBTASK -> getSubtask(httpExchange);
             case GET_SUBTASKS -> getSubtasks(httpExchange);
-            case POST_SUBTASK -> postSubtask(httpExchange);
+            case CREATE_SUBTASK -> createSubtask(httpExchange);
+            case UPDATE_SUBTASK -> updateSubtask(httpExchange);
             case DELETE_SUBTASK -> removeSubtask(httpExchange);
             default -> sendText(httpExchange, "invalid url", 404);
         }
@@ -92,25 +93,10 @@ public class SubtaskHttpHandler extends BaseHttpHandler {
         }
     }
 
-    private void postSubtask(HttpExchange httpExchange) throws IOException {
-        String body = getBody(httpExchange);
-        JsonElement element = JsonParser.parseString(body);
-        if (!element.isJsonObject()) {
-            sendText(httpExchange, "Internal Server Error", 500);
-            return;
-        }
-        JsonObject jsonObject = element.getAsJsonObject();
-        if (jsonObject.has("id")) {
-            updateSubtask(httpExchange);
-        }
-        createSubtask(httpExchange);
-    }
-
     private void createSubtask(HttpExchange httpExchange) throws IOException {
         try {
-            String body = getBody(httpExchange);
-            Subtask newTask = gson.fromJson(body, Subtask.class);
-            taskManager.add(newTask);
+            Subtask subtask = gson.fromJson(getBody(httpExchange), Subtask.class);
+            taskManager.add(subtask);
             sendText(httpExchange, "The subtask is create", 201);
         } catch (TimeIntersectionException e) {
             sendHasInteractions(httpExchange);
@@ -121,9 +107,8 @@ public class SubtaskHttpHandler extends BaseHttpHandler {
 
     private void updateSubtask(HttpExchange httpExchange) throws IOException {
         try {
-            String body = getBody(httpExchange);
-            Subtask newTask = gson.fromJson(body, Subtask.class);
-            taskManager.update(newTask);
+            Subtask subtask = gson.fromJson(getBody(httpExchange), Subtask.class);
+            taskManager.update(subtask);
             sendText(httpExchange, "The subtask is update", 201);
         } catch (TimeIntersectionException e) {
             sendHasInteractions(httpExchange);

@@ -1,9 +1,7 @@
 package http.handler;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
+import exceptions.TimeIntersectionException;
 import manager.TaskManager;
 import task.Epic;
 
@@ -14,7 +12,7 @@ public class EpicHttpHandler extends BaseHttpHandler {
         super(taskManager);
     }
 
-    enum Endpoint { GET_EPIC, GET_EPICS, GET_EPIC_SUBTASKS, POST_EPIC, DELETE_EPIC, UNKNOWN }
+    enum Endpoint { GET_EPIC, GET_EPICS, GET_EPIC_SUBTASKS, CREATE_EPIC, UPDATE_EPIC, DELETE_EPIC, UNKNOWN }
 
     private Endpoint getEndpoint(String requestPath, String requestMethod) {
         String[] pathParts = requestPath.split("/");
@@ -23,15 +21,20 @@ public class EpicHttpHandler extends BaseHttpHandler {
                 return Endpoint.GET_EPICS;
             }
             if (requestMethod.equals("POST")) {
-                return Endpoint.POST_EPIC;
+                return Endpoint.CREATE_EPIC;
             }
         }
         if (pathParts.length == 3 && pathParts[1].equals("epics")) {
-            if (requestMethod.equals("GET")) {
-                return Endpoint.GET_EPIC;
-            }
-            if (requestMethod.equals("DELETE")) {
-                return Endpoint.DELETE_EPIC;
+            switch (requestMethod) {
+                case "GET" -> {
+                    return Endpoint.GET_EPIC;
+                }
+                case "DELETE" -> {
+                    return Endpoint.DELETE_EPIC;
+                }
+                case "POST" -> {
+                    return Endpoint.UPDATE_EPIC;
+                }
             }
         }
         if (pathParts.length == 4 && pathParts[1].equals("epics") && pathParts[3].equals("subtasks")) {
@@ -49,7 +52,8 @@ public class EpicHttpHandler extends BaseHttpHandler {
             case GET_EPIC -> getEpic(httpExchange);
             case GET_EPICS -> getEpics(httpExchange);
             case GET_EPIC_SUBTASKS -> getEpicSubtasks(httpExchange);
-            case POST_EPIC -> postEpic(httpExchange);
+            case CREATE_EPIC -> createEpic(httpExchange);
+            case UPDATE_EPIC -> updateEpic(httpExchange);
             case DELETE_EPIC -> removeEpic(httpExchange);
             default -> sendText(httpExchange, "invalid url", 404);
         }
@@ -92,26 +96,13 @@ public class EpicHttpHandler extends BaseHttpHandler {
         }
     }
 
-    private void postEpic(HttpExchange httpExchange) throws IOException {
-        String body = getBody(httpExchange);
-        JsonElement element = JsonParser.parseString(body);
-        if (!element.isJsonObject()) {
-            sendText(httpExchange, "Internal Server Error", 500);
-            return;
-        }
-        JsonObject jsonObject = element.getAsJsonObject();
-        if (jsonObject.has("id")) {
-            updateEpic(httpExchange);
-        }
-        createEpic(httpExchange);
-    }
-
     private void updateEpic(HttpExchange httpExchange) throws IOException {
         try {
-            String body = getBody(httpExchange);
-            Epic newTask = gson.fromJson(body, Epic.class);
-            taskManager.update(newTask);
+            Epic epic = gson.fromJson(getBody(httpExchange), Epic.class);
+            taskManager.update(epic);
             sendText(httpExchange, "The epic is update", 201);
+        } catch (TimeIntersectionException e) {
+            sendHasInteractions(httpExchange);
         } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException e) {
             sendNotFound(httpExchange);
         }
@@ -119,10 +110,11 @@ public class EpicHttpHandler extends BaseHttpHandler {
 
     private void createEpic(HttpExchange httpExchange) throws IOException {
         try {
-            String body = getBody(httpExchange);
-            Epic newTask = gson.fromJson(body, Epic.class);
-            taskManager.add(newTask);
-            sendText(httpExchange, "The epic is created", 201);
+            Epic epic = gson.fromJson(getBody(httpExchange), Epic.class);
+            taskManager.add(epic);
+            sendText(httpExchange, "The epic is create", 201);
+        } catch (TimeIntersectionException e) {
+            sendHasInteractions(httpExchange);
         } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException e) {
             sendNotFound(httpExchange);
         }

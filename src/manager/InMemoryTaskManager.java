@@ -65,21 +65,17 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void add(Task task) {
         if (task.getStartTime() != null && task.getDuration() != null) {
-            try {
-                if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(task, t))) {
-                    throw new TimeIntersectionException(task.getName() + " overlaps in time with another task.");
+            if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(task, t))) {
+                throw new TimeIntersectionException(task.getName() + " overlaps in time with another task.");
+            } else {
+                sortedTasks.add(task);
+                if (task.getId() == 1) {
+                    task.setId(nextId++);
+                    tasks.put(task.getId(), task);
                 } else {
-                    sortedTasks.add(task);
-                    if (task.getId() == 1) {
-                        task.setId(nextId++);
-                        tasks.put(task.getId(), task);
-                    } else {
-                        tasks.put(task.getId(), task);
-                        nextId = task.getId() + 1;
-                    }
+                    tasks.put(task.getId(), task);
+                    nextId = task.getId() + 1;
                 }
-            } catch (TimeIntersectionException e) {
-                System.out.println(e.getMessage());
             }
         } else {
             if (task.getId() == 1) {
@@ -106,30 +102,26 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void add(Subtask subtask) {
         if (subtask.getStartTime() != null && subtask.getDuration() != null) {
-            try {
-                if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(subtask, t))) {
-                    throw new TimeIntersectionException(subtask.getName() + " overlaps in time with another task.");
+            if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(subtask, t))) {
+                throw new TimeIntersectionException(subtask.getName() + " overlaps in time with another task.");
+            } else {
+                if (subtask.getId() == 1) {
+                    subtask.setId(nextId++);
+                    subtasks.put(subtask.getId(), subtask);
+                    Epic epic = epics.get(subtask.getEpicId());
+                    epic.getSubIds().add(subtask.getId());
+                    epicStatusUpdate(epic);
+                    sortedTasks.add(subtask);
+                    epicTimeCalculate(epic);
                 } else {
-                    if (subtask.getId() == 1) {
-                        subtask.setId(nextId++);
-                        subtasks.put(subtask.getId(), subtask);
-                        Epic epic = epics.get(subtask.getEpicId());
-                        epic.getSubIds().add(subtask.getId());
-                        epicStatusUpdate(epic);
-                        sortedTasks.add(subtask);
-                        epicTimeCalculate(epic);
-                    } else {
-                        subtasks.put(subtask.getId(), subtask);
-                        Epic epic = epics.get(subtask.getEpicId());
-                        epic.getSubIds().add(subtask.getId());
-                        epicStatusUpdate(epic);
-                        nextId = subtask.getId() + 1;
-                        sortedTasks.add(subtask);
-                        epicTimeCalculate(epic);
-                    }
+                    subtasks.put(subtask.getId(), subtask);
+                    Epic epic = epics.get(subtask.getEpicId());
+                    epic.getSubIds().add(subtask.getId());
+                    epicStatusUpdate(epic);
+                    nextId = subtask.getId() + 1;
+                    sortedTasks.add(subtask);
+                    epicTimeCalculate(epic);
                 }
-            } catch (TimeIntersectionException e) {
-                System.out.println(e.getMessage());
             }
         } else {
             if (subtask.getId() == 1) {
@@ -151,17 +143,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void update(Task task) {
         if (task.getStartTime() != null && task.getDuration() != null) {
-            try {
-                sortedTasks.remove(tasks.get(task.getId()));
-                if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(task, t))) {
-                    sortedTasks.add(tasks.get(task.getId()));
-                    throw new TimeIntersectionException(task.getName() + " overlaps in time with another task.");
-                } else {
-                    tasks.put(task.getId(), task);
-                    sortedTasks.add(task);
-                }
-            } catch (TimeIntersectionException e) {
-                System.out.println(e.getMessage());
+            sortedTasks.remove(tasks.get(task.getId()));
+            if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(task, t))) {
+                sortedTasks.add(tasks.get(task.getId()));
+                throw new TimeIntersectionException(task.getName() + " overlaps in time with another task.");
+            } else {
+                tasks.put(task.getId(), task);
+                sortedTasks.add(task);
             }
         } else {
             tasks.put(task.getId(), task);
@@ -178,20 +166,17 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void update(Subtask subtask) {
         if (subtask.getStartTime() != null && subtask.getDuration() != null) {
-            try {
-                sortedTasks.remove(tasks.get(subtask.getId()));
-                if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(subtask, t))) {
-                    sortedTasks.add(tasks.get(subtask.getId()));
-                    throw new TimeIntersectionException(subtask.getName() + " overlaps in time with another task.");
-                } else {
-                    subtasks.put(subtask.getId(), subtask);
-                    Epic epic = epics.get(subtask.getEpicId());
-                    epicStatusUpdate(epic);
-                    sortedTasks.add(subtask);
-                    epicTimeCalculate(epic);
-                }
-            } catch (TimeIntersectionException e) {
-                System.out.println(e.getMessage());
+
+            sortedTasks.remove(tasks.get(subtask.getId()));
+            if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(subtask, t))) {
+                sortedTasks.add(tasks.get(subtask.getId()));
+                throw new TimeIntersectionException(subtask.getName() + " overlaps in time with another task.");
+            } else {
+                subtasks.put(subtask.getId(), subtask);
+                Epic epic = epics.get(subtask.getEpicId());
+                epicStatusUpdate(epic);
+                sortedTasks.add(subtask);
+                epicTimeCalculate(epic);
             }
         } else {
             subtasks.put(subtask.getId(), subtask);

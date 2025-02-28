@@ -1,12 +1,16 @@
 package task;
 
+import com.google.gson.annotations.Expose;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
     protected TypesOfTasks type = TypesOfTasks.EPIC;
+    @Expose(deserialize = false)
     private final ArrayList<Integer> subIds = new ArrayList<>();
+    @Expose(deserialize = false)
     private LocalDateTime epicEndTime;
 
     public Epic(String name, String description, Taskstatus status) {
@@ -62,9 +66,9 @@ public class Epic extends Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", type=" + type +
-                ", startTime=" + startTime +
-                ", duration=" + duration +
-                ", endTime=" + epicEndTime +
+                ", startTime=" + startTime.format(FORMATTER) +
+                ", duration=" + duration.toMinutes() +
+                ", endTime=" + epicEndTime.format(FORMATTER) +
                 '}';
     }
 }

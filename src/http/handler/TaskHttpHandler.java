@@ -1,8 +1,5 @@
 package http.handler;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import exceptions.TimeIntersectionException;
 import manager.TaskManager;
@@ -16,7 +13,7 @@ public class TaskHttpHandler extends BaseHttpHandler {
         super(taskManager);
     }
 
-    enum Endpoint { GET_EPIC, GET_TASKS, POST_TASK, DELETE_TASK, UNKNOWN }
+    enum Endpoint { GET_EPIC, GET_TASKS, CREATE_TASK, UPDATE_TASK, DELETE_TASK, UNKNOWN }
 
     private Endpoint getEndpoint(String requestPath, String requestMethod) {
         String[] pathParts = requestPath.split("/");
@@ -25,7 +22,7 @@ public class TaskHttpHandler extends BaseHttpHandler {
                 return Endpoint.GET_TASKS;
             }
             if (requestMethod.equals("POST")) {
-                return Endpoint.POST_TASK;
+                return Endpoint.CREATE_TASK;
             }
         }
         if (pathParts.length == 3 && pathParts[1].equals("tasks")) {
@@ -34,6 +31,9 @@ public class TaskHttpHandler extends BaseHttpHandler {
             }
             if (requestMethod.equals("DELETE")) {
                 return Endpoint.DELETE_TASK;
+            }
+            if (requestMethod.equals("POST")) {
+                return Endpoint.UPDATE_TASK;
             }
         }
         return Endpoint.UNKNOWN;
@@ -45,7 +45,8 @@ public class TaskHttpHandler extends BaseHttpHandler {
         switch (endpoint) {
             case GET_EPIC -> getTask(httpExchange);
             case GET_TASKS -> getTasks(httpExchange);
-            case POST_TASK -> postTask(httpExchange);
+            case CREATE_TASK -> createTask(httpExchange);
+            case UPDATE_TASK -> updateTask(httpExchange);
             case DELETE_TASK -> removeTask(httpExchange);
             default -> sendText(httpExchange, "invalid url", 404);
         }
@@ -88,25 +89,10 @@ public class TaskHttpHandler extends BaseHttpHandler {
         }
     }
 
-    private void postTask(HttpExchange httpExchange) throws IOException {
-        String body = getBody(httpExchange);
-        JsonElement element = JsonParser.parseString(body);
-        if (!element.isJsonObject()) {
-            sendText(httpExchange, "Internal Server Error", 500);
-            return;
-        }
-        JsonObject jsonObject = element.getAsJsonObject();
-        if (jsonObject.has("id")) {
-            updateTask(httpExchange);
-        }
-        createTask(httpExchange);
-    }
-
     private void createTask(HttpExchange httpExchange) throws IOException {
         try {
-            String body = getBody(httpExchange);
-            Task newTask = gson.fromJson(body, Task.class);
-            taskManager.add(newTask);
+            Task task = gson.fromJson(getBody(httpExchange), Task.class);
+            taskManager.add(task);
             sendText(httpExchange, "The task is create", 201);
         } catch (TimeIntersectionException e) {
             sendHasInteractions(httpExchange);
@@ -117,9 +103,8 @@ public class TaskHttpHandler extends BaseHttpHandler {
 
     private void updateTask(HttpExchange httpExchange) throws IOException {
         try {
-            String body = getBody(httpExchange);
-            Task newTask = gson.fromJson(body, Task.class);
-            taskManager.update(newTask);
+            Task task = gson.fromJson(getBody(httpExchange), Task.class);
+            taskManager.update(task);
             sendText(httpExchange, "The task is update", 201);
         } catch (TimeIntersectionException e) {
             sendHasInteractions(httpExchange);
