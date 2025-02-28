@@ -26,14 +26,16 @@ public class TaskHttpHandler extends BaseHttpHandler {
             }
         }
         if (pathParts.length == 3 && pathParts[1].equals("tasks")) {
-            if (requestMethod.equals("GET")) {
-                return Endpoint.GET_TASK;
-            }
-            if (requestMethod.equals("DELETE")) {
-                return Endpoint.DELETE_TASK;
-            }
-            if (requestMethod.equals("POST")) {
-                return Endpoint.UPDATE_TASK;
+            switch (requestMethod) {
+                case "GET" -> {
+                    return Endpoint.GET_TASK;
+                }
+                case "DELETE" -> {
+                    return Endpoint.DELETE_TASK;
+                }
+                case "POST" -> {
+                    return Endpoint.UPDATE_TASK;
+                }
             }
         }
         return Endpoint.UNKNOWN;

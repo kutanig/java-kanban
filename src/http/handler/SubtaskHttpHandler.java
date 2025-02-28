@@ -26,14 +26,16 @@ public class SubtaskHttpHandler extends BaseHttpHandler {
             }
         }
         if (pathParts.length == 3 && pathParts[1].equals("subtasks")) {
-            if (requestMethod.equals("GET")) {
-                return Endpoint.GET_SUBTASK;
-            }
-            if (requestMethod.equals("DELETE")) {
-                return Endpoint.DELETE_SUBTASK;
-            }
-            if (requestMethod.equals("POST")) {
-                return Endpoint.UPDATE_SUBTASK;
+            switch (requestMethod) {
+                case "GET" -> {
+                    return Endpoint.GET_SUBTASK;
+                }
+                case "DELETE" -> {
+                    return Endpoint.DELETE_SUBTASK;
+                }
+                case "POST" -> {
+                    return Endpoint.UPDATE_SUBTASK;
+                }
             }
         }
         return Endpoint.UNKNOWN;
