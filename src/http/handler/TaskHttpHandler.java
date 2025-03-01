@@ -55,8 +55,13 @@ public class TaskHttpHandler extends BaseHttpHandler {
     }
 
     private void getTasks(HttpExchange httpExchange) throws IOException {
+        try {
         response = gson.toJson(taskManager.getTasks());
         sendText(httpExchange, response, 200);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            sendNotFound(httpExchange);
+        }
     }
 
     private void getTask(HttpExchange httpExchange) throws IOException {
@@ -70,7 +75,8 @@ public class TaskHttpHandler extends BaseHttpHandler {
                 response = gson.toJson(task);
                 sendText(httpExchange, response, 200);
             }
-        } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             sendNotFound(httpExchange);
         }
     }
@@ -86,7 +92,8 @@ public class TaskHttpHandler extends BaseHttpHandler {
                 taskManager.removeTask(id);
                 sendText(httpExchange, "task deleted", 200);
             }
-        } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             sendNotFound(httpExchange);
         }
     }
@@ -98,7 +105,8 @@ public class TaskHttpHandler extends BaseHttpHandler {
             sendText(httpExchange, "The task is create", 201);
         } catch (TimeIntersectionException e) {
             sendHasInteractions(httpExchange);
-        } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             sendNotFound(httpExchange);
         }
     }
@@ -110,7 +118,8 @@ public class TaskHttpHandler extends BaseHttpHandler {
             sendText(httpExchange, "The task is update", 201);
         } catch (TimeIntersectionException e) {
             sendHasInteractions(httpExchange);
-        } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             sendNotFound(httpExchange);
         }
     }

@@ -60,8 +60,13 @@ public class EpicHttpHandler extends BaseHttpHandler {
     }
 
     private void getEpics(HttpExchange httpExchange) throws IOException {
+        try {
         response = gson.toJson(taskManager.getEpics());
         sendText(httpExchange, response, 200);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            sendNotFound(httpExchange);
+        }
     }
 
     private void getEpic(HttpExchange httpExchange) throws IOException {
@@ -75,7 +80,8 @@ public class EpicHttpHandler extends BaseHttpHandler {
                 response = gson.toJson(epic);
                 sendText(httpExchange, response, 200);
             }
-        } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException | IOException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             sendNotFound(httpExchange);
         }
     }
@@ -91,7 +97,8 @@ public class EpicHttpHandler extends BaseHttpHandler {
                 taskManager.removeTask(id);
                 sendText(httpExchange, "epic deleted", 200);
             }
-        } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             sendNotFound(httpExchange);
         }
     }
@@ -103,7 +110,8 @@ public class EpicHttpHandler extends BaseHttpHandler {
             sendText(httpExchange, "The epic is update", 201);
         } catch (TimeIntersectionException e) {
             sendHasInteractions(httpExchange);
-        } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             sendNotFound(httpExchange);
         }
     }
@@ -115,7 +123,8 @@ public class EpicHttpHandler extends BaseHttpHandler {
             sendText(httpExchange, "The epic is create", 201);
         } catch (TimeIntersectionException e) {
             sendHasInteractions(httpExchange);
-        } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             sendNotFound(httpExchange);
         }
     }
@@ -131,7 +140,8 @@ public class EpicHttpHandler extends BaseHttpHandler {
                 response = gson.toJson(taskManager.getSubsOfEpic(id));
                 sendText(httpExchange, response, 200);
             }
-        } catch (NumberFormatException | StringIndexOutOfBoundsException | NullPointerException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             sendNotFound(httpExchange);
         }
     }
