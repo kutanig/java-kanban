@@ -31,10 +31,6 @@ public class HttpTaskServer {
 
     public static void main(String[] args) throws IOException {
         HttpTaskServer server = new HttpTaskServer(Managers.getBackedTMDefault());
-        taskManager.add(new Task("task", "des", Taskstatus.NEW, LocalDateTime.of(2025, 5, 5, 5, 5), Duration.ofDays(5)));
-        taskManager.add(new Epic("epic", "des", Taskstatus.DONE));
-        taskManager.add(new Subtask("sub", "dis", Taskstatus.NEW, LocalDateTime.now(), Duration.ofMinutes(5), 2));
-        taskManager.add(new Task("task2", "dasd", Taskstatus.IN_PROGRESS));
         try {
             server.start();
         } catch (IOException e) {
