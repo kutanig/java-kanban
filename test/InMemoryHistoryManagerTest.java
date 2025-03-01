@@ -2,8 +2,8 @@ import manager.HistoryManager;
 import manager.Managers;
 import manager.TaskManager;
 import task.Epic;
-import task.Subtask;
 import task.Task;
+import task.Subtask;
 import task.Taskstatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -87,7 +87,6 @@ class InMemoryHistoryManagerTest {
         taskManager.getEpic(epic2.getId());
         taskManager.getSubsOfEpic(epic1.getId());
         taskManager.getSubsOfEpic(epic2.getId());
-
 
         taskManager.removeEpic(epic1.getId());
 

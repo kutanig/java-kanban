@@ -1,5 +1,6 @@
 package manager;
 
+import exceptions.TimeIntersectionException;
 import task.*;
 
 import java.time.Duration;
@@ -56,7 +57,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setDuration(epicDuration);
     }
 
-    private boolean timeIntersection(Task task1, Task task2) {
+    public boolean timeIntersection(Task task1, Task task2) {
         return (task1.getStartTime().isBefore(task2.getEndTime()) && task1.getEndTime().isAfter(task2.getStartTime()))
                 || task1.getStartTime().isEqual(task2.getEndTime()) || task1.getEndTime().isEqual(task2.getStartTime());
     }
@@ -65,7 +66,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void add(Task task) {
         if (task.getStartTime() != null && task.getDuration() != null) {
             if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(task, t))) {
-                System.out.println(task.getName() + " overlaps in time with another task.");
+                throw new TimeIntersectionException(task.getName() + " overlaps in time with another task.");
             } else {
                 sortedTasks.add(task);
                 if (task.getId() == 1) {
@@ -102,7 +103,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void add(Subtask subtask) {
         if (subtask.getStartTime() != null && subtask.getDuration() != null) {
             if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(subtask, t))) {
-                System.out.println(subtask.getName() + " overlaps in time with another task.");
+                throw new TimeIntersectionException(subtask.getName() + " overlaps in time with another task.");
             } else {
                 if (subtask.getId() == 1) {
                     subtask.setId(nextId++);
@@ -144,8 +145,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (task.getStartTime() != null && task.getDuration() != null) {
             sortedTasks.remove(tasks.get(task.getId()));
             if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(task, t))) {
-                System.out.println(task.getName() + " update error: overlaps in time with another task.");
                 sortedTasks.add(tasks.get(task.getId()));
+                throw new TimeIntersectionException(task.getName() + " overlaps in time with another task.");
             } else {
                 tasks.put(task.getId(), task);
                 sortedTasks.add(task);
@@ -165,10 +166,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void update(Subtask subtask) {
         if (subtask.getStartTime() != null && subtask.getDuration() != null) {
+
             sortedTasks.remove(tasks.get(subtask.getId()));
             if (getPrioritizedTasks().stream().anyMatch(t -> timeIntersection(subtask, t))) {
-                System.out.println(subtask.getName() + " update error: overlaps in time with another task.");
                 sortedTasks.add(tasks.get(subtask.getId()));
+                throw new TimeIntersectionException(subtask.getName() + " overlaps in time with another task.");
             } else {
                 subtasks.put(subtask.getId(), subtask);
                 Epic epic = epics.get(subtask.getEpicId());

@@ -1,18 +1,30 @@
 package task;
 
+import com.google.gson.annotations.Expose;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
 
+    @Expose
     protected Integer id = 1;
+    @Expose
     protected String name;
+    @Expose
     protected String description;
+    @Expose
     protected Taskstatus status;
+    @Expose
     protected TypesOfTasks type = TypesOfTasks.TASK;
+    @Expose
     protected LocalDateTime startTime;
+    @Expose
     protected Duration duration;
+    @Expose(serialize = false, deserialize = false)
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm");
 
     public Task(String name, String description, Taskstatus status) {
         this.name = name;
@@ -142,8 +154,8 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 ", type=" + type +
-                ", startTime=" + startTime +
-                ", duration=" + duration +
+                ", startTime=" + startTime.format(FORMATTER) +
+                ", duration=" + duration.toMinutes() +
                 '}';
     }
 }
